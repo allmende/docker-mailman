@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+
+  mailman:
+    image: macropin/mailman
+    hostname: FQDN
+    ports:
+     - "25:25"
+    expose:
+     - "80"
+    env_file:
+     - ./front-tier.env
+     - ./mailman.env
+    volumes:
+     - ./entry.sh:/entry.sh
+     - ./mm_cfg.py:/etc/mailman/mm_cfg.py
+     - ./main.cf:/etc/postfix/main.cf
+     - ./transport:/etc/postfix/transport
+    networks:
+     - front-tier
+
+networks:
+
+  front-tier:
+    external:
+      name: nginx_default
+
